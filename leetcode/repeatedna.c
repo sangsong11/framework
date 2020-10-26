@@ -12,6 +12,7 @@ using namespace std;
 #define MAX_LEN 1024
 class Solution
 {
+   // 字符串两个（10）
 public:
     vector<string>findRepeatedDnaSequences(string s)
     {
@@ -47,7 +48,7 @@ public:
 };
 
 
-
+// 大整数加法
 int change_to_array(const char *str,int a[])
 {
    int len = strlen(str);
