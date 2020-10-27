@@ -12,7 +12,6 @@ using namespace std;
 #define MAX_LEN 1024
 class Solution
 {
-   // 字符串两个（10）
 public:
     vector<string>findRepeatedDnaSequences(string s)
     {
@@ -43,12 +42,31 @@ public:
        return result;
     }
 
-    
+  int coinChange(vector<int>& coins,int amount)
+  {
+     vector<int>dp(amount+1,-1);
+     dp[0] = 0;
+     for(int i = 1; i<=amount;i++)
+     {
+         for(int j=0;j<coins.size();j++)
+         {
+            if(coins[j]<=i && dp[i-coins[j]] != -1)
+            {
+                if(dp[i] == -1 || dp[i] > dp[i-coins[j]] +1)
+                {
+                  dp[i] = dp[i - coins[j]] +1;
+                }            
+            }
+         }
+     }
+
+    return dp[amount];
+  }  
 
 };
 
 
-// 大整数加法
+
 int change_to_array(const char *str,int a[])
 {
    int len = strlen(str);
@@ -126,5 +144,18 @@ int main(int argc,char **argv)
     char *output = addBinary(a,b);
     printf("%s + %s = %s\n",a,b,output);
     free(output);
+
+
+
+    vector<int> coins;
+    coins.push_back(1);
+    coins.push_back(2);
+    coins.push_back(5);
+    coins.push_back(7);
+    coins.push_back(10);
+
+    printf("dp %d\n",solution.coinChange(coins,14));
+
+
     return 0;
 }
