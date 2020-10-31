@@ -92,6 +92,18 @@ public:
 
      return value[n-1];
   }
+
+  /*lettcode 268 消失的数字，位运算，已知数组nums无序的存储了0至n这n+1个数字，这时随机去掉其中的某个数字，
+  如何只遍历一次数组，就能求出去掉的那个数字呢*/
+  int missingNUmber(vector<int> &num) //返回消失的数字
+  {
+    int missing = 0;
+    for(int i = 0; i < num.size();i++)
+    {
+      missing = missing ^ num[i] ^ (i+1);
+    }
+    return missing;
+  }
 };
 
 
@@ -197,5 +209,14 @@ int main(int argc,char **argv)
    nums.push_back(7);
 
    printf("%d\n",solution.rob(nums));
+  
+
+   vector<int> missnums;
+  missnums.push_back(1);
+  missnums.push_back(0);
+  missnums.push_back(2);
+  missnums.push_back(5);
+  missnums.push_back(4);
+  printf("%d\n",solution.missingNUmber(missnums));
     return 0;
 }
