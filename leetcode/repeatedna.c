@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <algorithm>
 using namespace std;
 
 #define MAX_LEN 1024
@@ -104,6 +105,40 @@ public:
     }
     return missing;
   }
+
+  /*leetcode 452 射击气球  传入参数为数组的坐标，返回为箭的个数*/
+  bool cmp(const vector <int> &a,const vector<int> &b)
+  {
+    return a[0] < b[0];
+  }
+  int findMinArrowShots(vector<vector<int>> &points)
+  {
+    if(points.size() == 0)
+     {
+       return 0;
+     }
+     std::sort(points.begin(),points.end(),cmp);//对气球从左到右进行排序
+     int arrow_count = 1;
+     int interval_right = points[0][1];//存储射击区间的右端点，初始化为1气球的右端点
+
+     for(int i = 1;i< points.size();i++)//遍历各个气球
+     {
+       if(interval_right >=points[i][0]) //射击区间的右端点大于遍历气球的左端点，可以射击到气球
+       {
+            if(interval_right > points[i][1])//当前区间右端点大于遍历气球的右端点
+            {
+              interval_right = points[i][1];//将射击区间的右端点更新为遍历气球的右端点
+            }
+       }
+       else
+       {
+         arrow_count++; //增加射击次数
+         interval_right = points[i][1];//设置新的射击区间右端点为气球的右端点
+       } 
+     }
+     return arrow_count;
+  }
+
 };
 
 
@@ -211,12 +246,34 @@ int main(int argc,char **argv)
    printf("%d\n",solution.rob(nums));
   
 
-   vector<int> missnums;
+  vector<int> missnums;
   missnums.push_back(1);
   missnums.push_back(0);
   missnums.push_back(2);
   missnums.push_back(5);
   missnums.push_back(4);
   printf("%d\n",solution.missingNUmber(missnums));
-    return 0;
+
+  
+  vector<vector<int>> points;
+  vector<int> p0,p1,p2,p3;
+  p0.push_back(10);
+  p0.push_back(16);
+  points.push_back(p0);
+
+  p1.push_back(2);
+  p1.push_back(8);
+  points.push_back(p1);
+
+  p2.push_back(1);
+  p2.push_back(6);
+  points.push_back(p2);
+
+  p3.push_back(7);
+  p3.push_back(12);
+  points.push_back(p3);
+
+  printf("%d\n",solution.findMinArrowShots(points));
+  return 0;
+
 }
