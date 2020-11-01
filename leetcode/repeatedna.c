@@ -11,6 +11,19 @@
 using namespace std;
 
 #define MAX_LEN 1024
+
+struct ListNode
+{
+   int val;
+   ListNode *next;
+   ListNode(int x): val(x),next(NULL){}
+};
+
+bool cmp(const vector <int> &a,const vector<int> &b)
+{
+  return a[0] < b[0];
+}
+
 class Solution
 {
 public:
@@ -27,8 +40,8 @@ public:
             string word = s.substr(i,10);
             if(dna.find(word) != dna.end())
             {
-   	 	dna[word] += 1;
-	    }
+   	       	 dna[word] += 1;
+	          }
             else
             {
                dna[word] = 1;
@@ -107,10 +120,6 @@ public:
   }
 
   /*leetcode 452 射击气球  传入参数为数组的坐标，返回为箭的个数*/
-  bool cmp(const vector <int> &a,const vector<int> &b)
-  {
-    return a[0] < b[0];
-  }
   int findMinArrowShots(vector<vector<int>> &points)
   {
     if(points.size() == 0)
@@ -137,6 +146,50 @@ public:
        } 
      }
      return arrow_count;
+  }
+
+  /*leetcode 206 链表的逆置，直接逆置法*/
+  ListNode * reverseList(ListNode *head)
+  {
+    #if 1
+       ListNode *reverse = NULL;
+       ListNode *next   = NULL;
+       while(head)
+       {
+         next = head->next;
+         head->next = reverse;
+         reverse = head;
+         head = next;
+       }
+     return reverse;  
+   #else          //头插法
+      ListNode temp(0);
+      ListNode *next = NULL;
+      while(head)
+      {
+        next = head->next;
+        head->next = temp.next;
+        temp.next = head;
+        head = next;
+      }
+     return temp.next;
+   #endif
+  }
+
+  void list_print(ListNode *head,const char* name)
+  {
+    printf("%s:",name);
+    if(!head)
+    {
+      printf("NULL\n");
+      return;
+    }
+    while(head)
+    {
+      printf("[%d]",head->val);
+      head = head->next;
+    }
+    printf("\n");
   }
 
 };
@@ -274,6 +327,23 @@ int main(int argc,char **argv)
   points.push_back(p3);
 
   printf("%d\n",solution.findMinArrowShots(points));
+
+
+  ListNode la(1);
+  ListNode lb(2); 
+  ListNode lc(3);
+  ListNode ld(4);
+  ListNode le(5);
+
+  la.next = &lb;
+  lb.next = &lc;
+  lc.next = &ld;
+  ld.next = &le;
+  ListNode *head = &la;
+  solution.list_print(head,"old_list");
+  head = solution.reverseList(&la);
+
+   solution.list_print(head,"reverse_list");
   return 0;
 
 }
