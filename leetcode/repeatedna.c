@@ -22,7 +22,7 @@ struct ListNode
 bool cmp(const vector <int> &a,const vector<int> &b)
 {
   return a[0] < b[0];
-}
+};
 
 class Solution
 {
@@ -44,7 +44,7 @@ public:
 	          }
             else
             {
-               dna[word] = 1;
+              dna[word] = 1;
             }
        }
 
@@ -192,6 +192,54 @@ public:
     printf("\n");
   }
 
+
+  /*leetcode473 火柴拼正方形    */
+public:
+     bool makesquare(vector<int>&nums)
+     {
+       if(nums.size() < 4)
+       {
+         return false;
+       }
+       int sum = 0;
+       for(int i = 0; i < nums.size();i++)
+       {
+         sum += nums[i];
+       }
+       if(sum % 4)
+       {
+         return false;
+       }
+       sort(nums.rbegin(),nums.rend());
+       int bucket[4] = {0};
+       return backtrack(0,nums,sum/4,bucket);
+     }
+private:
+// i 代表正在放置的火柴的小标，nums存储火柴的长度
+// edge 为计算好的正方形边长，bucket存储4个桶的高度
+ bool backtrack(int i,vector<int>&nums,int edge,int bucket[])
+ {
+    if(i >= nums.size())
+    {
+      return true;
+    }
+    for(int j = 0;j<4;j++)
+    {
+      if(bucket[j]+nums[i] > edge) //这根火柴无法放在第j个桶中
+      {
+        continue;
+      }
+      bucket[i] += nums[i]; //num[i]放入桶j中
+      if(backtrack(i+1,nums,edge,bucket)) //递归放置下一个火柴
+      {
+         return true; //下一根火柴放置成功则直接返回true
+      }
+      bucket[j] -= nums[i];  //将nums[i]从桶j中拿出
+    }
+    return false;
+ }
+
+  
 };
 
 
@@ -343,7 +391,17 @@ int main(int argc,char **argv)
   solution.list_print(head,"old_list");
   head = solution.reverseList(&la);
 
-   solution.list_print(head,"reverse_list");
-  return 0;
+  solution.list_print(head,"reverse_list");
+
+
+ vector<int> numsquare;
+ numsquare.push_back(1);
+ numsquare.push_back(2);
+ numsquare.push_back(3);
+ numsquare.push_back(4);
+ numsquare.push_back(5);
+ numsquare.push_back(5);
+ printf("%d\n",solution.makesquare(numsquare));
+return 0;
 
 }
