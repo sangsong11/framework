@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <set>
 #include <algorithm>
 using namespace std;
 
@@ -175,6 +176,34 @@ public:
      return temp.next;
    #endif
   }
+ /*leetcode 160 链表焦点*/   // set 容器的两个特点： 元素时排好序的，元素时唯一的
+ ListNode *getintersectionNode(ListNode *headA,ListNode *headB)
+ {
+   #if 1
+      set<ListNode*> check_set;
+      ListNode *result = NULL;
+      while(headA)
+      {
+        check_set.insert(headA);
+        headA = headA ->next;
+      }
+      while(headB)
+      {
+        if(check_set.find(headB) != check_set.end())
+        {
+          result = headB;
+          break;
+        }
+        headB = headB ->next;
+      }
+      return result; 
+  #else
+
+
+  #endif
+
+ }
+
 
   void list_print(ListNode *head,const char* name)
   {
@@ -193,7 +222,7 @@ public:
   }
 
 
-  /*leetcode473 火柴拼正方形    */
+  /*leetcode473 火柴拼正方形  剪之优化   */
 public:
      bool makesquare(vector<int>&nums)
      {
@@ -238,8 +267,81 @@ private:
     }
     return false;
  }
+ 
+   /* leetcode N皇后问题 回溯法*/
+   // x,y表示放置皇后的坐标，二维数组attack表示棋盘是否可放置皇后
+   void put_queen(int x,int y,vector<vector<int>> &attack)
+   {
+     //方向数组，方便后面对8个方向进行标记
+     static const int dx[] = {-1,1,0,0,-1,-1,1,1};
+     static const int dy[] = {0,0,-1,1,-1,1,-1,1};
 
-  
+     attack[x][y] = 1; 
+     //通过二层循环，将皇后可能攻击的位置进行标记
+     for(int i = 1;i<attack.size();i++) //从皇后位置向1到n-1个距离延伸
+     {
+       for(int j = 0;j < 8;j++) //遍历8个方向
+       {
+         int nx = x + i * dx[j];  //生成的新位置的行
+         int ny = y + i * dy[j];  //生成的新位置的列
+         if(nx >= 0 && nx < attack.size() && ny >= 0 && ny < attack.size()) //在棋盘内
+         {
+           attack[nx][ny] = 1;
+         }
+       }
+     }
+   }
+  // K表示当前处理的行
+  // n 表示N皇后问题
+  // queen存储皇后的位置
+  //attack 标记皇后攻击的位置 
+  //solve 存储N皇后的全部解法
+   void qbacktrack(int k,int n,vector<string>&queen,vector<vector<int>> &attack,
+        vector<vector<string>> &solve)
+    {
+      if(k == n)   //找到一组解
+      {
+        solve.push_back(queen);
+        return ;
+      }
+      
+      //遍历0至n-1列，在循环中，回溯试探皇后可知放置的位置
+      for(int i = 0;i < n;i++)
+      {
+        if(attack[k][i] == 0) //判断当前k行i列是否可以放置皇后
+        {
+          vector<vector<int>> tmp = attack; //备份attack数组
+          queen[k][i] = 'Q';
+          put_queen(k,i,attack);
+          qbacktrack(k+1,n,queen,attack,solve);
+          attack = tmp;
+          queen[k][i] = '.';
+        }
+      }
+    }
+
+public:
+    vector<vector<string>> solveQueens(int n)
+    {
+       vector<vector<string>> solve; //存储最后结果
+       vector<vector<int>>attack;  // 标记皇后的攻击位置
+       vector<string> queen;  //保存皇后位置
+
+       for(int i = 0; i < n; i++)
+       {
+         attack.push_back((std::vector<int>()));
+         for(int j = 0;j < n;j++)
+         {
+           attack[i].push_back(0);
+         }
+         queen.push_back("");
+         queen[i].append(n,'.');
+       }
+       qbacktrack(0,n,queen,attack,solve);
+       return solve;
+    }
+   
+
 };
 
 
@@ -402,6 +504,22 @@ int main(int argc,char **argv)
  numsquare.push_back(5);
  numsquare.push_back(5);
  printf("%d\n",solution.makesquare(numsquare));
+
+
+ vector<vector<string>> qresult;
+ qresult = solution.solveQueens(8);
+ printf("4皇后共有%ld多种解法:\n",qresult.size());
+ for(int j = 0; j < qresult.size();j++)
+ {
+   printf("解法%d:\n",j+1);
+   for(int k = 0;k < qresult[j].size();k++)
+   {
+     printf("%s\n",qresult[j][k].c_str());
+   }
+   printf("\n");
+ }
 return 0;
+
+
 
 }
