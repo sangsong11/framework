@@ -1,27 +1,3 @@
-/*/*******************************************************************************
-**                                                                            **
-**                     Jiedi(China nanjing)Ltd.                               **
-**	               ´´½¨£º¶¡ËÎÌÎ ÏÄ²Ü¿¡£¬´Ë´úÂë¿ÉÓÃ×÷ÎªÑ§Ï°²Î¿¼                **
-*******************************************************************************/
-
-/*****************************FILE INFOMATION***********************************
-**
-** Project       :c++ÊµÕ½Çø¿éÁ´ºËĞÄÃÜÂëÑ§-»ùÓÚopenssl
-** Contact       : xiacaojun@qq.com
-**  ²©¿Í   : http://blog.csdn.net/jiedichina
-**	ÊÓÆµ¿Î³Ì : ÍøÒ×ÔÆ¿ÎÌÃ	http://study.163.com/u/xiacaojun		
-			   ÌÚÑ¶¿ÎÌÃ		https://jiedi.ke.qq.com/				
-			   csdnÑ§Ôº               http://edu.csdn.net/lecturer/lecturer_detail?lecturer_id=961	
-**             51ctoÑ§Ôº              http://edu.51cto.com/lecturer/index/user_id-12016059.html	
-** 			   ÀÏÏÄ¿ÎÌÃ		http://www.laoxiaketang.com 
-**                 
-**  c++ÊµÕ½Çø¿éÁ´ºËĞÄÃÜÂëÑ§-»ùÓÚopenssl   ¿Î³ÌÈº £º1064420127¼ÓÈëÈºÏÂÔØ´úÂëºÍÑ§Ô±½»Á÷
-**                           Î¢ĞÅ¹«ÖÚºÅ  : jiedi2007
-**		Í·ÌõºÅ	 : ÏÄ²Ü¿¡
-**
-*****************************************************************************
-//£¡£¡£¡£¡£¡£¡£¡£¡£¡c++ÊµÕ½Çø¿éÁ´ºËĞÄÃÜÂëÑ§-»ùÓÚopenssl ¿Î³Ì  QQÈº£º1064420127ÏÂÔØ´úÂëºÍÑ§Ô±½»Á÷*/
-
 #include <iostream>
 #include <openssl/bio.h>
 #include <openssl/evp.h>
@@ -31,7 +7,7 @@ int Base64Encode(const unsigned char* in, int len, char* out_base64)
 {
     if (!in || len <= 0 || !out_base64)
         return 0;
-    //ÄÚ´æÔ´ source
+    //å†…å­˜æº source
     auto mem_bio = BIO_new(BIO_s_mem());
     if (!mem_bio)return 0;
 
@@ -43,30 +19,30 @@ int Base64Encode(const unsigned char* in, int len, char* out_base64)
         return 0;
     }
 
-    //ĞÎ³ÉBIOÁ´
+    //å½¢æˆBIOé“¾
     //b64-mem
     BIO_push(b64_bio, mem_bio);
-    //³¬¹ı64×Ö½Ú²»Ìí¼Ó»»ĞĞ£¨\n£©,±àÂëµÄÊı¾İÔÚÒ»ĞĞÖĞ
-    // Ä¬ÈÏ½áÎ²ÓĞ»»ĞĞ·û\n ³¬¹ı64×Ö½ÚÔÙÌí¼Ó\n
+    //è¶…è¿‡64å­—èŠ‚ä¸æ·»åŠ æ¢è¡Œï¼ˆ\nï¼‰,ç¼–ç çš„æ•°æ®åœ¨ä¸€è¡Œä¸­
+    // é»˜è®¤ç»“å°¾æœ‰æ¢è¡Œç¬¦\n è¶…è¿‡64å­—èŠ‚å†æ·»åŠ \n
     BIO_set_flags(b64_bio, BIO_FLAGS_BASE64_NO_NL);
     
-    // Ğ´Èëµ½base64 filter ½øĞĞ±àÂë£¬½á¹û»á´«µİµ½Á´±íµÄÏÂÒ»¸ö½Úµã
-    // µ½memÖĞ¶ÁÈ¡½á¹û(Á´±íÍ·²¿´ú±íÁËÕû¸öÁ´±í)
-    // BIO_write ±àÂë 3×Ö½Ú=¡·4×Ö½Ú  ²»×ã3×Ö½Ú²¹³ä0 ºÍ =
-    // ±àÂëÊı¾İÃ¿64×Ö½Ú£¨²»È·¶¨£©»á¼Ó\n »»ĞĞ·û
+    // å†™å…¥åˆ°base64 filter è¿›è¡Œç¼–ç ï¼Œç»“æœä¼šä¼ é€’åˆ°é“¾è¡¨çš„ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
+    // åˆ°memä¸­è¯»å–ç»“æœ(é“¾è¡¨å¤´éƒ¨ä»£è¡¨äº†æ•´ä¸ªé“¾è¡¨)
+    // BIO_write ç¼–ç  3å­—èŠ‚=ã€‹4å­—èŠ‚  ä¸è¶³3å­—èŠ‚è¡¥å……0 å’Œ =
+    // ç¼–ç æ•°æ®æ¯64å­—èŠ‚ï¼ˆä¸ç¡®å®šï¼‰ä¼šåŠ \n æ¢è¡Œç¬¦
     int re = BIO_write(b64_bio, in, len);
     if (re <= 0)
     {
-        //Çé¿öÕû¸öÁ´±í½Úµã
+        //æƒ…å†µæ•´ä¸ªé“¾è¡¨èŠ‚ç‚¹
         BIO_free_all(b64_bio);
         return 0;
     }
 
-    //Ë¢ĞÂ»º´æ£¬Ğ´ÈëÁ´±íµÄmem
+    //åˆ·æ–°ç¼“å­˜ï¼Œå†™å…¥é“¾è¡¨çš„mem
     BIO_flush(b64_bio);
 
     int outsize = 0;
-    //´ÓÁ´±íÔ´ÄÚ´æ¶ÁÈ¡
+    //ä»é“¾è¡¨æºå†…å­˜è¯»å–
     BUF_MEM* p_data = 0;
     BIO_get_mem_ptr(b64_bio, &p_data);
     if (p_data)
@@ -82,24 +58,24 @@ int Base64Decode(const char* in, int len, unsigned char* out_data)
 {
     if (!in || len <= 0 || !out_data)
         return 0;
-    //ÄÚ´æÔ´ £¨ÃÜÎÄ£©
+    //å†…å­˜æº ï¼ˆå¯†æ–‡ï¼‰
     auto mem_bio = BIO_new_mem_buf(in, len);
     if (!mem_bio)return 0;
-    //base64 ¹ıÂËÆ÷
+    //base64 è¿‡æ»¤å™¨
     auto b64_bio = BIO_new(BIO_f_base64());
     if (!b64_bio)
     {
         BIO_free(mem_bio);
         return 0;
     }
-    //ĞÎ³ÉBIOÁ´
+    //å½¢æˆBIOé“¾
     BIO_push(b64_bio, mem_bio);
 
-    //Ä¬ÈÏ¶ÁÈ¡»»ĞĞ·û×ö½áÊø
-    //ÉèÖÃºó±àÂëÖĞÈç¹ûÓĞ\n»áÊ§°Ü
+    //é»˜è®¤è¯»å–æ¢è¡Œç¬¦åšç»“æŸ
+    //è®¾ç½®åç¼–ç ä¸­å¦‚æœæœ‰\nä¼šå¤±è´¥
     BIO_set_flags(b64_bio, BIO_FLAGS_BASE64_NO_NL);
 
-    //¶ÁÈ¡ ½âÂë 4×Ö½Ú×ª3×Ö½Ú
+    //è¯»å– è§£ç  4å­—èŠ‚è½¬3å­—èŠ‚
     size_t size = 0;
     BIO_read_ex(b64_bio, out_data,len,&size);
     BIO_free_all(b64_bio);
@@ -112,7 +88,7 @@ int main(int argc, char* argv[])
 {
     cout << "Test  openssl BIO base64!" << endl;
     
-    unsigned char data[] = "²âÊÔbase64Êı¾İ0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
+    unsigned char data[] = "æµ‹è¯•base64æ•°æ®0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
     int len = sizeof(data);
     char out[4096] = { 0 };
     unsigned char out2[4096] = { 0 };
