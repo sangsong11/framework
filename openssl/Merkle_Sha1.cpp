@@ -1,27 +1,3 @@
-/*/*******************************************************************************
-**                                                                            **
-**                     Jiedi(China nanjing)Ltd.                               **
-**	               ´´½¨£º¶¡ËÎÌÎ ÏÄ²Ü¿¡£¬´Ë´úÂë¿ÉÓÃ×÷ÎªÑ§Ï°²Î¿¼                **
-*******************************************************************************/
-
-/*****************************FILE INFOMATION***********************************
-**
-** Project       :c++ÊµÕ½Çø¿éÁ´ºËĞÄÃÜÂëÑ§-»ùÓÚopenssl
-** Contact       : xiacaojun@qq.com
-**  ²©¿Í   : http://blog.csdn.net/jiedichina
-**	ÊÓÆµ¿Î³Ì : ÍøÒ×ÔÆ¿ÎÌÃ	http://study.163.com/u/xiacaojun		
-			   ÌÚÑ¶¿ÎÌÃ		https://jiedi.ke.qq.com/				
-			   csdnÑ§Ôº               http://edu.csdn.net/lecturer/lecturer_detail?lecturer_id=961	
-**             51ctoÑ§Ôº              http://edu.51cto.com/lecturer/index/user_id-12016059.html	
-** 			   ÀÏÏÄ¿ÎÌÃ		http://www.laoxiaketang.com 
-**                 
-**  c++ÊµÕ½Çø¿éÁ´ºËĞÄÃÜÂëÑ§-»ùÓÚopenssl   ¿Î³ÌÈº £º1064420127¼ÓÈëÈºÏÂÔØ´úÂëºÍÑ§Ô±½»Á÷
-**                           Î¢ĞÅ¹«ÖÚºÅ  : jiedi2007
-**		Í·ÌõºÅ	 : ÏÄ²Ü¿¡
-**
-*****************************************************************************
-//£¡£¡£¡£¡£¡£¡£¡£¡£¡c++ÊµÕ½Çø¿éÁ´ºËĞÄÃÜÂëÑ§-»ùÓÚopenssl ¿Î³Ì  QQÈº£º1064420127ÏÂÔØ´úÂëºÍÑ§Ô±½»Á÷*/
-
 #include <iostream>
 #include <openssl/md5.h>
 #include <fstream>
@@ -33,17 +9,17 @@ using namespace std;
 string GetFileListHash(string filepath)
 {
     string hash;
-    //ÒÔ¶ş½øÖÆ·½Ê½´ò¿ªÎÄ¼ş
+    //ä»¥äºŒè¿›åˆ¶æ–¹å¼æ‰“å¼€æ–‡ä»¶
     ifstream ifs(filepath, ios::binary);
     if (!ifs)
         return hash;
-    //Ò»´Î¶ÁÈ¡¶àÉÙ×Ö½ÚµÄÎÄ¼ş
+    //ä¸€æ¬¡è¯»å–å¤šå°‘å­—èŠ‚çš„æ–‡ä»¶
     int block_size = 128;
     
-    //ÎÄ¼ş¶ÁÈ¡buf
+    //æ–‡ä»¶è¯»å–buf
     unsigned char buf[1024] = { 0 };
 
-    //hashÊä³ö
+    //hashè¾“å‡º
     unsigned char out[1024] = { 0 };
 
     while (!ifs.eof())
@@ -59,7 +35,7 @@ string GetFileListHash(string filepath)
     return string(out,out+16);
 }
 
-//ÎÄ¼ş¿ÉĞÅÊ÷Hash
+//æ–‡ä»¶å¯ä¿¡æ ‘Hash
 /*
                     A               A
                   /  \            /   \
@@ -72,7 +48,7 @@ string GetFileListHash(string filepath)
 string GetFileMerkleHash(string filepath)
 {
     string hash;
-    //´æ·ÅhashÒ¶×Ó½Úµã£¬ºóÃæËùÓĞ½á¹û¶¼´æÔÚÆäÖĞ
+    //å­˜æ”¾hashå¶å­èŠ‚ç‚¹ï¼Œåé¢æ‰€æœ‰ç»“æœéƒ½å­˜åœ¨å…¶ä¸­
     vector<string> hashes;
     ifstream ifs(filepath, ios::binary);
     if (!ifs)return hash;
@@ -85,29 +61,29 @@ string GetFileMerkleHash(string filepath)
         int read_size = ifs.gcount();
         if (read_size <= 0)break;
         SHA1(buf, read_size, out);
-        //Ğ´ÈëÒ¶×Ó½ÚµãµÄhashÖµ
+        //å†™å…¥å¶å­èŠ‚ç‚¹çš„hashå€¼
         hashes.push_back(string(out, out + 20));
     }
 
-    while (hashes.size() > 1) // ==1 ±íÊ¾ÒÑ¾­¼ÆËãµ½root½Úµã
+    while (hashes.size() > 1) // ==1 è¡¨ç¤ºå·²ç»è®¡ç®—åˆ°rootèŠ‚ç‚¹
     {
-        //²»ÊÇ¶şµÄ±¶Êı²¹½Úµã £¨¶ş²æÊ÷£©
+        //ä¸æ˜¯äºŒçš„å€æ•°è¡¥èŠ‚ç‚¹ ï¼ˆäºŒå‰æ ‘ï¼‰
         if (hashes.size() & 1)
         {
-            //²¹³ä×îºóÒ»¸ö½Úµã
+            //è¡¥å……æœ€åä¸€ä¸ªèŠ‚ç‚¹
             hashes.push_back(hashes.back());
         }
-        //°ÑÁ½Á½½ÚµãµÄhash½á¹û»¹Ğ´ÈëhashesÖĞ£¬
+        //æŠŠä¸¤ä¸¤èŠ‚ç‚¹çš„hashç»“æœè¿˜å†™å…¥hashesä¸­ï¼Œ
         for (int i = 0; i < hashes.size() / 2; i++)
         {
-            //Á½¸ö½ÚµãÆ´ÆğÀ´ i±íÊ¾µÄÊÇ¸¸½Úµã
+            //ä¸¤ä¸ªèŠ‚ç‚¹æ‹¼èµ·æ¥ iè¡¨ç¤ºçš„æ˜¯çˆ¶èŠ‚ç‚¹
             string tmp_hash = hashes[i * 2];
             tmp_hash += hashes[i * 2 + 1];
             SHA1((unsigned char*)tmp_hash.data(), tmp_hash.size(), out);
-            //Ğ´Èë½á¹û
+            //å†™å…¥ç»“æœ
             hashes[i] = string(out, out + 20);
         }
-        //hashÁĞ±íÉ¾³ıÉÏÒ»´Î¶àÓàµÄhashÖµ
+        //hashåˆ—è¡¨åˆ é™¤ä¸Šä¸€æ¬¡å¤šä½™çš„hashå€¼
         hashes.resize(hashes.size() / 2);
     }
     if (hashes.size() == 0) return hash;
@@ -123,7 +99,7 @@ void PrintHex(string data)
 int main(int argc, char* argv[])
 {
     cout << "Test  Hash!" << endl;
-    unsigned char data[] = "²âÊÔmd5Êı¾İ";
+    unsigned char data[] = "æµ‹è¯•md5æ•°æ®";
     unsigned char out[1024] = { 0 };
     int len = sizeof(data);
     MD5_CTX c;
@@ -141,7 +117,7 @@ int main(int argc, char* argv[])
     string filepath = "../../src/test_hash/test_hash.cpp";
     auto hash1 = GetFileListHash(filepath);
     PrintHex(hash1);
-    //ÑéÖ¤ÎÄ¼şÍêÕûĞÔ
+    //éªŒè¯æ–‡ä»¶å®Œæ•´æ€§
     for (;;)
     {
         auto hash = GetFileListHash(filepath);
@@ -152,7 +128,7 @@ int main(int argc, char* argv[])
         PrintHex(thash);
         if (hash != hash1)
         { 
-            cout << "ÎÄ¼ş±»ĞŞ¸Ä" ;
+            cout << "æ–‡ä»¶è¢«ä¿®æ”¹" ;
             PrintHex(hash);
         }   
         this_thread::sleep_for(1s);
