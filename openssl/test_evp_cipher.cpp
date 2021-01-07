@@ -1,27 +1,3 @@
-/*/*******************************************************************************
-**                                                                            **
-**                     Jiedi(China nanjing)Ltd.                               **
-**	               ´´½¨£º¶¡ËÎÌÎ ÏÄ²Ü¿¡£¬´Ë´úÂë¿ÉÓÃ×÷ÎªÑ§Ï°²Î¿¼                **
-*******************************************************************************/
-
-/*****************************FILE INFOMATION***********************************
-**
-** Project       :c++ÊµÕ½Çø¿éÁ´ºËĞÄÃÜÂëÑ§-»ùÓÚopenssl
-** Contact       : xiacaojun@qq.com
-**  ²©¿Í   : http://blog.csdn.net/jiedichina
-**	ÊÓÆµ¿Î³Ì : ÍøÒ×ÔÆ¿ÎÌÃ	http://study.163.com/u/xiacaojun		
-			   ÌÚÑ¶¿ÎÌÃ		https://jiedi.ke.qq.com/				
-			   csdnÑ§Ôº               http://edu.csdn.net/lecturer/lecturer_detail?lecturer_id=961	
-**             51ctoÑ§Ôº              http://edu.51cto.com/lecturer/index/user_id-12016059.html	
-** 			   ÀÏÏÄ¿ÎÌÃ		http://www.laoxiaketang.com 
-**                 
-**  c++ÊµÕ½Çø¿éÁ´ºËĞÄÃÜÂëÑ§-»ùÓÚopenssl   ¿Î³ÌÈº £º1064420127¼ÓÈëÈºÏÂÔØ´úÂëºÍÑ§Ô±½»Á÷
-**                           Î¢ĞÅ¹«ÖÚºÅ  : jiedi2007
-**		Í·ÌõºÅ	 : ÏÄ²Ü¿¡
-**
-*****************************************************************************
-//£¡£¡£¡£¡£¡£¡£¡£¡£¡c++ÊµÕ½Çø¿éÁ´ºËĞÄÃÜÂëÑ§-»ùÓÚopenssl ¿Î³Ì  QQÈº£º1064420127ÏÂÔØ´úÂëºÍÑ§Ô±½»Á÷*/
-
 #include <iostream>
 #include <openssl/evp.h>
 #include <openssl/err.h>
@@ -37,34 +13,34 @@ using namespace std;
 
 bool EncryptFile(string passwd, string in_filename, string out_filename,bool is_enc)
 {
-    //Ñ¡Ôñ¼Ó½âÃÜËã·¨£¬ºóÃæ¿ÉÒÔÌæ»»
+    //é€‰æ‹©åŠ è§£å¯†ç®—æ³•ï¼Œåé¢å¯ä»¥æ›¿æ¢
     auto cipher = EVP_des_ede3_cbc();
 
-    //ÊäÈëÎÄ¼ş´óĞ¡
+    //è¾“å…¥æ–‡ä»¶å¤§å°
     int in_file_size = 0;
 
-    //Êä³öÎÄ¼ş´óĞ¡
+    //è¾“å‡ºæ–‡ä»¶å¤§å°
     int out_file_size = 0;
-    ifstream ifs(in_filename, ios::binary); //¶ş½øÖÆ´ò¿ªÊäÈëÎÄ¼ş
+    ifstream ifs(in_filename, ios::binary); //äºŒè¿›åˆ¶æ‰“å¼€è¾“å…¥æ–‡ä»¶
     if (!ifs)return false;
-    ofstream ofs(out_filename, ios::binary);//¶ş½øÖÆ´óĞ¡Êä³öÎÄ¼ş
+    ofstream ofs(out_filename, ios::binary);//äºŒè¿›åˆ¶å¤§å°è¾“å‡ºæ–‡ä»¶
     if (!ofs)
     {
         ifs.close();
         return false;
     }
-    auto ctx = EVP_CIPHER_CTX_new(); //¼Ó½âÃÜÉÏÏÂÎÄ
+    auto ctx = EVP_CIPHER_CTX_new(); //åŠ è§£å¯†ä¸Šä¸‹æ–‡
 
-    //ÃÜÔ¿³õÊ¼»¯ ¶à³öµÄ¶ªÆú
+    //å¯†é’¥åˆå§‹åŒ– å¤šå‡ºçš„ä¸¢å¼ƒ
     unsigned char key[128] = { 0 };
-    int key_size = EVP_CIPHER_key_length(cipher);// »ñÈ¡ÃÜÔ¿³¤¶È
-    if (key_size > passwd.size())   //ÃÜÂëÉÙÁË
+    int key_size = EVP_CIPHER_key_length(cipher);// è·å–å¯†é’¥é•¿åº¦
+    if (key_size > passwd.size())   //å¯†ç å°‘äº†
     {
         key_size = passwd.size();
     }
     memcpy(key, passwd.data(), key_size);
 
-    unsigned char iv[128] = { 0 }; //³õÊ¼»¯ÏòÁ¿
+    unsigned char iv[128] = { 0 }; //åˆå§‹åŒ–å‘é‡
     int re = EVP_CipherInit(ctx, cipher, key, iv, is_enc);
     if (!re)
     {
@@ -77,22 +53,22 @@ bool EncryptFile(string passwd, string in_filename, string out_filename,bool is_
     unsigned char buf[1024] = { 0 };
     unsigned char out[1024] = { 0 };
     int out_len = 0;
-    //1 ¶ÁÎÄ¼ş=¡·2 ¼Ó½âÃÜÎÄ¼ş=¡·3Ğ´ÈëÎÄ¼ş
+    //1 è¯»æ–‡ä»¶=ã€‹2 åŠ è§£å¯†æ–‡ä»¶=ã€‹3å†™å…¥æ–‡ä»¶
     while (!ifs.eof())
     {
-        //1 ¶ÁÎÄ¼ş
+        //1 è¯»æ–‡ä»¶
         ifs.read((char*)buf, sizeof(buf));
         int count = ifs.gcount();
         if (count <= 0)break;
-        in_file_size += count; //Í³¼Æ¶ÁÈ¡ÎÄ¼ş´óĞ¡
-        //2 ¼Ó½âÃÜÎÄ¼ş »úÃÜµ½out
+        in_file_size += count; //ç»Ÿè®¡è¯»å–æ–‡ä»¶å¤§å°
+        //2 åŠ è§£å¯†æ–‡ä»¶ æœºå¯†åˆ°out
         EVP_CipherUpdate(ctx, out, &out_len, buf, count);
         if (out_len <= 0)break;
-        //3 Ğ´ÈëÎÄ¼ş
+        //3 å†™å…¥æ–‡ä»¶
         ofs.write((char*)out, out_len);
         out_file_size += out_len;
     }
-    //È¡³ö×îºóÒ»¿éÊı¾İ
+    //å–å‡ºæœ€åä¸€å—æ•°æ®
     EVP_CipherFinal(ctx, out, &out_len);
     if (out_len > 0)
     {
@@ -109,9 +85,9 @@ bool EncryptFile(string passwd, string in_filename, string out_filename,bool is_
 }
 bool XSecEncryptFile(string passwd, string in_filename, string out_filename, bool is_enc)
 {
-    ifstream ifs(in_filename, ios::binary); //¶ş½øÖÆ´ò¿ªÊäÈëÎÄ¼ş
+    ifstream ifs(in_filename, ios::binary); //äºŒè¿›åˆ¶æ‰“å¼€è¾“å…¥æ–‡ä»¶
     if (!ifs)return false;
-    ofstream ofs(out_filename, ios::binary);//¶ş½øÖÆ´óĞ¡Êä³öÎÄ¼ş
+    ofstream ofs(out_filename, ios::binary);//äºŒè¿›åˆ¶å¤§å°è¾“å‡ºæ–‡ä»¶
     if (!ofs)
     {
         ifs.close();
@@ -123,15 +99,15 @@ bool XSecEncryptFile(string passwd, string in_filename, string out_filename, boo
     unsigned char buf[1024] = { 0 };
     unsigned char out[1024] = { 0 };
     int out_len = 0;
-    //1 ¶ÁÎÄ¼ş=¡·2 ¼Ó½âÃÜÎÄ¼ş=¡·3Ğ´ÈëÎÄ¼ş
+    //1 è¯»æ–‡ä»¶=ã€‹2 åŠ è§£å¯†æ–‡ä»¶=ã€‹3å†™å…¥æ–‡ä»¶
     while (!ifs.eof())
     {
-        //1 ¶ÁÎÄ¼ş
+        //1 è¯»æ–‡ä»¶
         ifs.read((char*)buf, sizeof(buf));
         int count = ifs.gcount();
         if (count <= 0)break;
         bool is_end = false;
-        if (ifs.eof()) //ÎÄ¼ş½áÎ²
+        if (ifs.eof()) //æ–‡ä»¶ç»“å°¾
             is_end = true;
         out_len = sec.Encrypt(buf, count, out, is_end);
         if (out_len <= 0)
@@ -144,7 +120,7 @@ bool XSecEncryptFile(string passwd, string in_filename, string out_filename, boo
     return true;
 }
 
-//²âÊÔËã·¨ĞÔÄÜ
+//æµ‹è¯•ç®—æ³•æ€§èƒ½
 class TestCipher
 {
 public:
@@ -164,7 +140,7 @@ public:
         in_ = new unsigned char[data_size];
         en_ = new unsigned char[data_size + 128];
         de_ = new unsigned char[data_size + 128];
-        //²âÊÔÊı¾İ¸³³õÖµ
+        //æµ‹è¯•æ•°æ®èµ‹åˆå€¼
         unsigned int data = 1;
         for (int i = 0; i < data_size; i += sizeof(data))
         {
@@ -181,19 +157,19 @@ public:
         cout << " ============ "<<type_name << " ============ " << endl;
         XSec sec;
         
-        //¼ÓÃÜ
+        //åŠ å¯†
         sec.Init(type, passwd,true);
         auto start = clock();
         int en_size = sec.Encrypt(in_, data_size_, en_);
         auto end = clock();
-        cout << "¼ÓÃÜ»¨·ÑÊ±¼ä£º" << (double)((end - start) / (double)CLOCKS_PER_SEC) << "Ãë" << endl;
+        cout << "åŠ å¯†èŠ±è´¹æ—¶é—´ï¼š" << (double)((end - start) / (double)CLOCKS_PER_SEC) << "ç§’" << endl;
         
-        //½âÃÜ
+        //è§£å¯†
         sec.Init(type, passwd, false);
         start = clock();
         int de_size = sec.Encrypt(en_, en_size, de_);
         end = clock();
-        cout  << "½âÃÜ»¨·ÑÊ±¼ä£º" << (double)((end - start) / (double)CLOCKS_PER_SEC) << "Ãë" << endl;
+        cout  << "è§£å¯†èŠ±è´¹æ—¶é—´ï¼š" << (double)((end - start) / (double)CLOCKS_PER_SEC) << "ç§’" << endl;
     }
 
     ~TestCipher()
@@ -202,19 +178,19 @@ public:
     }
 
 private:
-    //²âÊÔÊı×Ö½ÚÊı
+    //æµ‹è¯•æ•°å­—èŠ‚æ•°
     int data_size_ = 0;
 
-    //²âÊÔÊı¾İ
+    //æµ‹è¯•æ•°æ®
     unsigned char* in_ = nullptr;
 
-    //¼ÓÃÜºóÊı¾İ
+    //åŠ å¯†åæ•°æ®
     unsigned char* en_ = nullptr;
 
-    //½âÃÜºóÊı¾İ
+    //è§£å¯†åæ•°æ®
     unsigned char* de_ = nullptr;
 
-    //ÃÜÂë ÊÊÓ¦¸÷ÖÖÇ¿¶È
+    //å¯†ç  é€‚åº”å„ç§å¼ºåº¦
     string passwd = "12345678ABCDEFGHabcdefgh!@#$%^&*";
 };
 
@@ -253,42 +229,42 @@ int main(int argc, char* argv[])
     //ci.Test(XDES_ECB, "XDES_ECB");
 
 
-    //¼ÓÃÜÎÄ¼ş
+    //åŠ å¯†æ–‡ä»¶
     EncryptFile("1234567812345678",
         "test_evp_cipher.cpp",
         "test_evp_cipher.encrypt2.txt",
         true);
 
-    //½âÃÜÎÄ¼ş
+    //è§£å¯†æ–‡ä»¶
     EncryptFile("1234567812345678",
         "test_evp_cipher.encrypt2.txt",
         "test_evp_cipher.decrypt2.txt",
         false);
 
-    //¼ÓÃÜÎÄ¼ş
+    //åŠ å¯†æ–‡ä»¶
     EncryptFile("12345678", 
         "test_evp_cipher.cpp", 
         "test_evp_cipher.encrypt.txt",
         true);
     
-    //½âÃÜÎÄ¼ş
+    //è§£å¯†æ–‡ä»¶
     EncryptFile("12345678", 
         "test_evp_cipher.encrypt.txt", 
         "test_evp_cipher.decrypt.txt", 
         false);
     
-    const unsigned char data[128] = "12345678123456781";//ÊäÈë
+    const unsigned char data[128] = "12345678123456781";//è¾“å…¥
     int data_size = strlen((char*)data);
     cout << "data_size = " << data_size << endl;
-    unsigned char out[1024] = { 0 };                //Êä³ö
-    unsigned char key[128] = "12345678901234567890";//ÃØÔ¿
-    unsigned char iv[128] = { 0 };                  //³õÊ¼»¯ÏòÁ¿
-    //ÈıÖØDES 3DES Ëã·¨
+    unsigned char out[1024] = { 0 };                //è¾“å‡º
+    unsigned char key[128] = "12345678901234567890";//ç§˜é’¥
+    unsigned char iv[128] = { 0 };                  //åˆå§‹åŒ–å‘é‡
+    //ä¸‰é‡DES 3DES ç®—æ³•
     auto cipher = EVP_des_ede3_cbc();
     //error:digital envelope routines:EVP_CipherInit_ex:initialization error
     //auto cipher = EVP_des_cbc();
 
-    //»ñÈ¡Ëã·¨µÄ·Ö×é´óĞ¡£¨£©
+    //è·å–ç®—æ³•çš„åˆ†ç»„å¤§å°ï¼ˆï¼‰
     int block_size = EVP_CIPHER_block_size(cipher);
     int key_size = EVP_CIPHER_key_length(cipher);
     int iv_size = EVP_CIPHER_iv_length(cipher);
@@ -296,11 +272,11 @@ int main(int argc, char* argv[])
     cout << "key_size = " << key_size << endl;
     cout << "iv_size = " << iv_size << endl;
 
-    //¼Ó½âÃÜÉÏÏÂÎÄ
+    //åŠ è§£å¯†ä¸Šä¸‹æ–‡
     auto ctx = EVP_CIPHER_CTX_new();
-    //¼ÓÃÜËã·¨³õÊ¼»¯
+    //åŠ å¯†ç®—æ³•åˆå§‹åŒ–
     int re = EVP_CipherInit(ctx, cipher, key, iv,
-        1  //1 ±íÊ¾¼ÓÃÜ
+        1  //1 è¡¨ç¤ºåŠ å¯†
     );
     if (!re)
     {
@@ -308,25 +284,25 @@ int main(int argc, char* argv[])
         getchar();
         return -1;
     }
-    cout << "EVP_CipherInit success£¡" << endl;
+    cout << "EVP_CipherInit successï¼" << endl;
 
-    //Ä¬ÈÏ PKCS7 ²¹³ä´óĞ¡ EVP_PADDING_PKCS7
-    //¹Ø±Õ×Ô¶¯Ìî³ä
+    //é»˜è®¤ PKCS7 è¡¥å……å¤§å° EVP_PADDING_PKCS7
+    //å…³é—­è‡ªåŠ¨å¡«å……
     //EVP_CIPHER_CTX_set_padding(ctx, 0);
     EVP_CIPHER_CTX_set_padding(ctx, EVP_PADDING_PKCS7);
     int out_size = 0;
 
-    //Ö»´¦Àí·Ö×é´óĞ¡µÃµ½Êı¾İ,Èç¹ûÈ¡Ïû×Ô¶¯Ìî³ä£¬¶àÓàÊı¾İ¶ªÆú
-    // Èç¹û×Ô¶¯Ìî³ä£¬ÔòÔÚEVP_CipherFinal ÖĞ»ñÈ¡Êı¾İ
+    //åªå¤„ç†åˆ†ç»„å¤§å°å¾—åˆ°æ•°æ®,å¦‚æœå–æ¶ˆè‡ªåŠ¨å¡«å……ï¼Œå¤šä½™æ•°æ®ä¸¢å¼ƒ
+    // å¦‚æœè‡ªåŠ¨å¡«å……ï¼Œåˆ™åœ¨EVP_CipherFinal ä¸­è·å–æ•°æ®
     EVP_CipherUpdate(ctx,
-        out,           //Êä³ö
-        &out_size,     //Êä³öÊı¾İ´óĞ¡
-        data,          //ÊäÈëÊı¾İ
+        out,           //è¾“å‡º
+        &out_size,     //è¾“å‡ºæ•°æ®å¤§å°
+        data,          //è¾“å…¥æ•°æ®
         data_size
     );
 
     cout << "EVP_CipherUpdate size:" << out_size << endl;
-    //È¡³ö×îºóÒ»¿éÊı¾İ£¨ĞèÒªÌî³äµÄ£©£¬»òÕßÊÇpadding²¹³äµÄÊı¾İ
+    //å–å‡ºæœ€åä¸€å—æ•°æ®ï¼ˆéœ€è¦å¡«å……çš„ï¼‰ï¼Œæˆ–è€…æ˜¯paddingè¡¥å……çš„æ•°æ®
     int padding_size = 0;
     EVP_CipherFinal(ctx, out + out_size, &padding_size);
     cout << "padding_size = " << padding_size << endl;
@@ -334,32 +310,32 @@ int main(int argc, char* argv[])
     cout << out_size << ":" << out << endl;
 
     //////////////////////////////////////////////////////////////////
-    /// ½âÃÜÊı¾İ Ê¹ÓÃÔ­À´µÄctx
+    /// è§£å¯†æ•°æ® ä½¿ç”¨åŸæ¥çš„ctx
     re = EVP_CipherInit(ctx, cipher, key, iv, 
-        0 //0±íÊ¾½âÃÜ
+        0 //0è¡¨ç¤ºè§£å¯†
     );
     if (!re)
     {
         ERR_print_errors_fp(stderr);
     }
 
-    //½âÃÜÃÜÎÄºó´æ·ÅµÄÃ÷ÎÄ
+    //è§£å¯†å¯†æ–‡åå­˜æ”¾çš„æ˜æ–‡
     unsigned char out2[1024] = { 0 };
     int out2_size = 0;
-    //½âÃÜÊı¾İ Ìî³äÊı¾İÈ¡²»µ½
+    //è§£å¯†æ•°æ® å¡«å……æ•°æ®å–ä¸åˆ°
     EVP_CipherUpdate(ctx,
-        out2, &out2_size, //ÊäÈëÃÜÎÄÊı¾İ
-        out, out_size);   //Êä³ö½âÃÜºóÃ÷ÎÄ
+        out2, &out2_size, //è¾“å…¥å¯†æ–‡æ•°æ®
+        out, out_size);   //è¾“å‡ºè§£å¯†åæ˜æ–‡
     cout << "EVP_CipherUpdate out2_size = " << out2_size << endl;
 
-    //È¡³öÌî³äÊı¾İ
+    //å–å‡ºå¡«å……æ•°æ®
     EVP_CipherFinal(ctx, out2 + out2_size, &padding_size);
     cout << "EVP_CipherFinal padding_size=" << padding_size << endl;
     out2_size += padding_size;
     cout << out2_size << ":" << out2 << "|" << endl;
 
 
-    //ÊÍ·ÅÉÏÏÂÎÄ
+    //é‡Šæ”¾ä¸Šä¸‹æ–‡
     EVP_CIPHER_CTX_free(ctx);
 
     getchar();
