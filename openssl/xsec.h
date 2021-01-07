@@ -1,27 +1,3 @@
-/*/*******************************************************************************
-**                                                                            **
-**                     Jiedi(China nanjing)Ltd.                               **
-**	               ´´½¨£º¶¡ËÎÌÎ ÏÄ²Ü¿¡£¬´Ë´úÂë¿ÉÓÃ×÷ÎªÑ§Ï°²Î¿¼                **
-*******************************************************************************/
-
-/*****************************FILE INFOMATION***********************************
-**
-** Project       :c++ÊµÕ½Çø¿éÁ´ºËĞÄÃÜÂëÑ§-»ùÓÚopenssl
-** Contact       : xiacaojun@qq.com
-**  ²©¿Í   : http://blog.csdn.net/jiedichina
-**	ÊÓÆµ¿Î³Ì : ÍøÒ×ÔÆ¿ÎÌÃ	http://study.163.com/u/xiacaojun		
-			   ÌÚÑ¶¿ÎÌÃ		https://jiedi.ke.qq.com/				
-			   csdnÑ§Ôº               http://edu.csdn.net/lecturer/lecturer_detail?lecturer_id=961	
-**             51ctoÑ§Ôº              http://edu.51cto.com/lecturer/index/user_id-12016059.html	
-** 			   ÀÏÏÄ¿ÎÌÃ		http://www.laoxiaketang.com 
-**                 
-**  c++ÊµÕ½Çø¿éÁ´ºËĞÄÃÜÂëÑ§-»ùÓÚopenssl   ¿Î³ÌÈº £º1064420127¼ÓÈëÈºÏÂÔØ´úÂëºÍÑ§Ô±½»Á÷
-**                           Î¢ĞÅ¹«ÖÚºÅ  : jiedi2007
-**		Í·ÌõºÅ	 : ÏÄ²Ü¿¡
-**
-*****************************************************************************
-//£¡£¡£¡£¡£¡£¡£¡£¡£¡c++ÊµÕ½Çø¿éÁ´ºËĞÄÃÜÂëÑ§-»ùÓÚopenssl ¿Î³Ì  QQÈº£º1064420127ÏÂÔØ´úÂëºÍÑ§Ô±½»Á÷*/
-
 #pragma once
 #include <string>
 #include <openssl/des.h>
@@ -51,59 +27,59 @@ class XSec
 public:
 
     /////////////////////////////////////////////////////////////////
-    ///³õÊ¼»¯¼ÓÃÜ¶ÔÏó£¬ÇåÀíÖ®Ç°µÄÊı¾İ
-    ///@para type ¼ÓÃÜÀàĞÍ
-    ///@para pass ÃØÔ¿£¬¿ÉÒÔÊÇ¶ş½øÖÆ
-    ///@is_en true¼ÓÃÜ false½âÃÜ
-    ///@return ÊÇ·ñ³É¹¦
+    ///åˆå§‹åŒ–åŠ å¯†å¯¹è±¡ï¼Œæ¸…ç†ä¹‹å‰çš„æ•°æ®
+    ///@para type åŠ å¯†ç±»å‹
+    ///@para pass ç§˜é’¥ï¼Œå¯ä»¥æ˜¯äºŒè¿›åˆ¶
+    ///@is_en trueåŠ å¯† falseè§£å¯†
+    ///@return æ˜¯å¦æˆåŠŸ
     virtual bool Init(XSecType type, const std::string& pass, bool is_en);
 
     /////////////////////////////////////////////////////////////////////
-    /// ¼Ó½âÃÜÊı¾İ
-    ///@para in ÊäÈëÊı¾İ
-    ///@para in_size Êı¾İ´óĞ¡
-    ///@para Êä³öÊı¾İ
-    ///@para ³É¹¦·µ»Ø¼Ó½âÃÜºóÊı¾İ×Ö½Ú´óĞ¡£¬Ê§°Ü·µ»Ø0
+    /// åŠ è§£å¯†æ•°æ®
+    ///@para in è¾“å…¥æ•°æ®
+    ///@para in_size æ•°æ®å¤§å°
+    ///@para è¾“å‡ºæ•°æ®
+    ///@para æˆåŠŸè¿”å›åŠ è§£å¯†åæ•°æ®å­—èŠ‚å¤§å°ï¼Œå¤±è´¥è¿”å›0
     virtual int Encrypt(const unsigned char* in, int in_size, unsigned char* out,bool is_end = true);
 
     /////////////////////////////////////////////////////////////////////
-    /// ÇåÀíÉÏÏÂÎÄºÍÁÙÊ±¿Õ¼ä£¬Öµ³õÊ¼»¯
+    /// æ¸…ç†ä¸Šä¸‹æ–‡å’Œä¸´æ—¶ç©ºé—´ï¼Œå€¼åˆå§‹åŒ–
     virtual void Close();
 
 private:
 
     ////////////////////////////////////////////////////////////////////////
-    /// DES ECBÄ£Ê½¼ÓÃÜ
+    /// DES ECBæ¨¡å¼åŠ å¯†
     int EnDesECB(const unsigned char* in, int in_size, unsigned char* out,bool is_end);
     
     ////////////////////////////////////////////////////////////////////////
-    /// DES ECBÄ£Ê½½âÃÜ
+    /// DES ECBæ¨¡å¼è§£å¯†
     int DeDesECB(const unsigned char* in, int in_size, unsigned char* out, bool is_end);
 
     ////////////////////////////////////////////////////////////////////////
-    /// DES CBCÄ£Ê½¼ÓÃÜ
+    /// DES CBCæ¨¡å¼åŠ å¯†
     int EnDesCBC(const unsigned char* in, int in_size, unsigned char* out, bool is_end);
 
     ////////////////////////////////////////////////////////////////////////
-    /// DES CBCÄ£Ê½½âÃÜ
+    /// DES CBCæ¨¡å¼è§£å¯†
     int DeDesCBC(const unsigned char* in, int in_size, unsigned char* out, bool is_end);
     
     ////////////////////////////////////////////////////////////////////////
-    //DESËã·¨ÃØÔ¿
+    //DESç®—æ³•ç§˜é’¥
     DES_key_schedule ks_;
 
-    //¼ÓÃÜËã·¨ÀàĞÍ
+    //åŠ å¯†ç®—æ³•ç±»å‹
     XSecType type_;
 
     bool is_en_;
 
-    //Êı¾İ¿é´óĞ¡ ·Ö×é´óĞ¡
+    //æ•°æ®å—å¤§å° åˆ†ç»„å¤§å°
     int block_size_ = 0;
 
-    //³õÊ¼»¯ÏòÁ¿
+    //åˆå§‹åŒ–å‘é‡
     unsigned char iv_[128] = { 0 };
 
-    //¼Ó½âÃÜÉÏÏÂÎÄ
+    //åŠ è§£å¯†ä¸Šä¸‹æ–‡
     void* ctx_ = 0;
 };
 
