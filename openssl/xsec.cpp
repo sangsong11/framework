@@ -1,27 +1,3 @@
-/*/*******************************************************************************
-**                                                                            **
-**                     Jiedi(China nanjing)Ltd.                               **
-**	               ´´½¨£º¶¡ËÎÌÎ ÏÄ²Ü¿¡£¬´Ë´úÂë¿ÉÓÃ×÷ÎªÑ§Ï°²Î¿¼                **
-*******************************************************************************/
-
-/*****************************FILE INFOMATION***********************************
-**
-** Project       :c++ÊµÕ½Çø¿éÁ´ºËĞÄÃÜÂëÑ§-»ùÓÚopenssl
-** Contact       : xiacaojun@qq.com
-**  ²©¿Í   : http://blog.csdn.net/jiedichina
-**	ÊÓÆµ¿Î³Ì : ÍøÒ×ÔÆ¿ÎÌÃ	http://study.163.com/u/xiacaojun		
-			   ÌÚÑ¶¿ÎÌÃ		https://jiedi.ke.qq.com/				
-			   csdnÑ§Ôº               http://edu.csdn.net/lecturer/lecturer_detail?lecturer_id=961	
-**             51ctoÑ§Ôº              http://edu.51cto.com/lecturer/index/user_id-12016059.html	
-** 			   ÀÏÏÄ¿ÎÌÃ		http://www.laoxiaketang.com 
-**                 
-**  c++ÊµÕ½Çø¿éÁ´ºËĞÄÃÜÂëÑ§-»ùÓÚopenssl   ¿Î³ÌÈº £º1064420127¼ÓÈëÈºÏÂÔØ´úÂëºÍÑ§Ô±½»Á÷
-**                           Î¢ĞÅ¹«ÖÚºÅ  : jiedi2007
-**		Í·ÌõºÅ	 : ÏÄ²Ü¿¡
-**
-*****************************************************************************
-//£¡£¡£¡£¡£¡£¡£¡£¡£¡c++ÊµÕ½Çø¿éÁ´ºËĞÄÃÜÂëÑ§-»ùÓÚopenssl ¿Î³Ì  QQÈº£º1064420127ÏÂÔØ´úÂëºÍÑ§Ô±½»Á÷*/
-
 #include "xsec.h"
 #include <openssl/evp.h>
 #include <openssl/err.h>
@@ -29,7 +5,7 @@
 using namespace std;
 void XSec::Close()
 {   
-    //³õÊ¼»¯iv_
+    //åˆå§‹åŒ–iv_
     memset(iv_, 0, sizeof(iv_));
     if (ctx_)
     {
@@ -40,21 +16,21 @@ void XSec::Close()
 }
 
 /////////////////////////////////////////////////////////////////
-///³õÊ¼»¯¼ÓÃÜ¶ÔÏó£¬ÇåÀíÖ®Ç°µÄÊı¾İ
-///@para type ¼ÓÃÜÀàĞÍ
-///@para pass ÃØÔ¿£¬¿ÉÒÔÊÇ¶ş½øÖÆ
-///@is_en true¼ÓÃÜ false½âÃÜ
-///@return ÊÇ·ñ³É¹¦
+///åˆå§‹åŒ–åŠ å¯†å¯¹è±¡ï¼Œæ¸…ç†ä¹‹å‰çš„æ•°æ®
+///@para type åŠ å¯†ç±»å‹
+///@para pass ç§˜é’¥ï¼Œå¯ä»¥æ˜¯äºŒè¿›åˆ¶
+///@is_en trueåŠ å¯† falseè§£å¯†
+///@return æ˜¯å¦æˆåŠŸ
 bool XSec::Init(XSecType type, const std::string& pass, bool is_en)
 {
     Close();
     this->type_ = type;
     this->is_en_ = is_en;
-    //ÃÜÔ¿²¹È«»ò¶ªÆú
-    unsigned char key[32] = { 0 }; //ÉÙµÄ²¹³ä0
+    //å¯†é’¥è¡¥å…¨æˆ–ä¸¢å¼ƒ
+    unsigned char key[32] = { 0 }; //å°‘çš„è¡¥å……0
     int key_size = pass.size();
 
-    //¼Ó½âÃÜËã·¨
+    //åŠ è§£å¯†ç®—æ³•
     const EVP_CIPHER* cipher = 0;
 
     switch (type)
@@ -62,10 +38,10 @@ bool XSec::Init(XSecType type, const std::string& pass, bool is_en)
     case XDES_ECB:
     case XDES_CBC:
         block_size_ = DES_KEY_SZ;
-        ///ÃÜÂë²ßÂÔ£¬³¬³ö8×Ö½ÚµÄ¶ªÆú£¬ÉÙµÄ²¹³ä0
-        //³¬³ö8×Ö½ÚµÄ¶ªÆú£¬
+        ///å¯†ç ç­–ç•¥ï¼Œè¶…å‡º8å­—èŠ‚çš„ä¸¢å¼ƒï¼Œå°‘çš„è¡¥å……0
+        //è¶…å‡º8å­—èŠ‚çš„ä¸¢å¼ƒï¼Œ
         if (key_size > block_size_) key_size = block_size_;
-        //ÉÙµÄ²¹³ä0
+        //å°‘çš„è¡¥å……0
         memcpy(key, pass.data(), key_size);
         DES_set_key((const_DES_cblock*)key, &ks_);
         return true;
@@ -106,19 +82,19 @@ bool XSec::Init(XSecType type, const std::string& pass, bool is_en)
 
     if (!cipher)return false;
 
-    //·Ö×é´óĞ¡
+    //åˆ†ç»„å¤§å°
     block_size_ = EVP_CIPHER_block_size(cipher);
 
-    //ÃÜÔ¿²¹³ä»òÕß¶ªÆú
+    //å¯†é’¥è¡¥å……æˆ–è€…ä¸¢å¼ƒ
     if (key_size > EVP_CIPHER_key_length(cipher))
         key_size = EVP_CIPHER_key_length(cipher);
     memcpy(key, pass.data(), key_size);
 
 
-    //¼Ó½âÃÜÉÏÏÂÎÄ
+    //åŠ è§£å¯†ä¸Šä¸‹æ–‡
     ctx_ = EVP_CIPHER_CTX_new();
 
-    //³õÊ¼»¯ÉÏÏÂÎÄ
+    //åˆå§‹åŒ–ä¸Šä¸‹æ–‡
     int re = EVP_CipherInit((EVP_CIPHER_CTX*)ctx_,
         cipher,key,iv_,is_en_
         );
@@ -133,11 +109,11 @@ bool XSec::Init(XSecType type, const std::string& pass, bool is_en)
 
 
 /////////////////////////////////////////////////////////////////////
-/// ¼Ó½âÃÜÊı¾İ
-///@para in ÊäÈëÊı¾İ
-///@para in_size Êı¾İ´óĞ¡
-///@para Êä³öÊı¾İ
-///@para ³É¹¦·µ»Ø¼Ó½âÃÜºóÊı¾İ×Ö½Ú´óĞ¡£¬Ê§°Ü·µ»Ø0
+/// åŠ è§£å¯†æ•°æ®
+///@para in è¾“å…¥æ•°æ®
+///@para in_size æ•°æ®å¤§å°
+///@para è¾“å‡ºæ•°æ®
+///@para æˆåŠŸè¿”å›åŠ è§£å¯†åæ•°æ®å­—èŠ‚å¤§å°ï¼Œå¤±è´¥è¿”å›0
 int XSec::Encrypt(const unsigned char* in, int in_size, unsigned char* out, bool is_end)
 {
     if (type_ == XDES_ECB)
@@ -162,22 +138,22 @@ int XSec::Encrypt(const unsigned char* in, int in_size, unsigned char* out, bool
             return DeDesCBC(in, in_size, out, is_end);
         }
     }
-    //²»ÊÇ×îºóÒ»¿éÊı¾İ£¬²»Ìî³äPKCS7
+    //ä¸æ˜¯æœ€åä¸€å—æ•°æ®ï¼Œä¸å¡«å……PKCS7
     if (is_end)
         EVP_CIPHER_CTX_set_padding((EVP_CIPHER_CTX*)ctx_, EVP_PADDING_PKCS7);
     else
-        EVP_CIPHER_CTX_set_padding((EVP_CIPHER_CTX*)ctx_, 0); //¹Ø±Õ×Ô¶¯Ìî³ä
+        EVP_CIPHER_CTX_set_padding((EVP_CIPHER_CTX*)ctx_, 0); //å…³é—­è‡ªåŠ¨å¡«å……
     int out_len = 0;
     EVP_CipherUpdate((EVP_CIPHER_CTX*)ctx_, out, &out_len, in, in_size);
     if (out_len <= 0)
         return 0;
-    //³öÈ¥Ìî³äµÃµ½Êı¾İ
+    //å‡ºå»å¡«å……å¾—åˆ°æ•°æ®
     int out_padding_len = 0;
     EVP_CipherFinal((EVP_CIPHER_CTX*)ctx_, out + out_len, &out_padding_len);
     return out_len+ out_padding_len;
 }
 ////////////////////////////////////////////////////////////////////////
-/// DES ECBÄ£Ê½½âÃÜ
+/// DES ECBæ¨¡å¼è§£å¯†
 int XSec::DeDesECB(const unsigned char* in, int in_size, unsigned char* out, bool is_end)
 {
     for (int i = 0; i < in_size; i += block_size_)
@@ -190,31 +166,31 @@ int XSec::DeDesECB(const unsigned char* in, int in_size, unsigned char* out, boo
         );
     }
     if (is_end)
-        //PKCS7 ×îºóÒ»¸ö×Ö½Ú´æ´¢µÄ²¹³ä×Ö½ÚÊı
+        //PKCS7 æœ€åä¸€ä¸ªå­—èŠ‚å­˜å‚¨çš„è¡¥å……å­—èŠ‚æ•°
         return in_size - out[in_size - 1];
     else
         return in_size;
 }
 ////////////////////////////////////////////////////////////////////////
-/// DES ECBÄ£Ê½¼ÓÃÜ
+/// DES ECBæ¨¡å¼åŠ å¯†
 int XSec::EnDesECB(const unsigned char* in, int in_size, unsigned char* out, bool is_end)
 {
-    ///Êı¾İÌî³ä PKCS7 Padding
+    ///æ•°æ®å¡«å…… PKCS7 Padding
     /*
-    ¼ÙÉèÊı¾İ³¤¶ÈĞèÒªÌî³än(n>0)¸ö×Ö½Ú²Å¶ÔÆë£¬ÄÇÃ´Ìî³än¸ö×Ö½Ú£¬Ã¿¸ö×Ö½Ú¶¼ÊÇn;
-    Èç¹ûÊı¾İ±¾Éí¾ÍÒÑ¾­¶ÔÆëÁË£¬ÔòÌî³äÒ»¿é³¤¶ÈÎª¿é´óĞ¡µÄÊı¾İ£¬Ã¿¸ö×Ö½Ú¶¼ÊÇ¿é´óĞ¡¡£
+    å‡è®¾æ•°æ®é•¿åº¦éœ€è¦å¡«å……n(n>0)ä¸ªå­—èŠ‚æ‰å¯¹é½ï¼Œé‚£ä¹ˆå¡«å……nä¸ªå­—èŠ‚ï¼Œæ¯ä¸ªå­—èŠ‚éƒ½æ˜¯n;
+    å¦‚æœæ•°æ®æœ¬èº«å°±å·²ç»å¯¹é½äº†ï¼Œåˆ™å¡«å……ä¸€å—é•¿åº¦ä¸ºå—å¤§å°çš„æ•°æ®ï¼Œæ¯ä¸ªå­—èŠ‚éƒ½æ˜¯å—å¤§å°ã€‚
     */
     unsigned char pad[8] = { 0 };
     int padding_size = block_size_ - (in_size % block_size_);
-    //ÌîÈë²¹³äµÄ×Ö½Ú´óĞ¡
+    //å¡«å…¥è¡¥å……çš„å­—èŠ‚å¤§å°
     memset(pad, padding_size, sizeof(pad));
     int i = 0;
     for ( ;i < in_size; i += block_size_)
     {
-        //×îºóÒ»¿éÊı¾İ£¬Ğ¡ÓÚblock_size_ ĞèÒªÌî³ä
+        //æœ€åä¸€å—æ•°æ®ï¼Œå°äºblock_size_ éœ€è¦å¡«å……
         if (in_size - i < block_size_)
         {
-            //ÌîÈëÊı¾İ
+            //å¡«å…¥æ•°æ®
             memcpy(pad, in + i, in_size - i);
             break;
         }
@@ -225,7 +201,7 @@ int XSec::EnDesECB(const unsigned char* in, int in_size, unsigned char* out, boo
         );
     }
     if (!is_end)return in_size;
-    //²¹³ä PKCS7½áÎ²
+    //è¡¥å…… PKCS7ç»“å°¾
     DES_ecb_encrypt((const_DES_cblock*)pad,
         (DES_cblock*)(out + i),
         &ks_,
@@ -235,18 +211,18 @@ int XSec::EnDesECB(const unsigned char* in, int in_size, unsigned char* out, boo
 }
 
 ////////////////////////////////////////////////////////////////////////
-/// DES CBCÄ£Ê½¼ÓÃÜ
+/// DES CBCæ¨¡å¼åŠ å¯†
 int XSec::EnDesCBC(const unsigned char* in, int in_size, unsigned char* out,bool is_end)
 {
-    //Ìî³äµÄÊı¾İ PKCS7 Padding
+    //å¡«å……çš„æ•°æ® PKCS7 Padding
     unsigned char pad[8] = { 0 };
     int padding_size = block_size_ - (in_size % block_size_);
-    //ÌîÈë²¹³äµÄ×Ö½Ú´óĞ¡
+    //å¡«å…¥è¡¥å……çš„å­—èŠ‚å¤§å°
     memset(pad, padding_size, sizeof(pad));
-    //block ÕûÊı±¶´óĞ¡
+    //block æ•´æ•°å€å¤§å°
     int size1 = in_size - (in_size % block_size_);
 
-    //ncbc±£ÁôivĞŞ¸Ä ¼õÈ¥ĞèÒª²¹³äµÄÊı¾İ
+    //ncbcä¿ç•™ivä¿®æ”¹ å‡å»éœ€è¦è¡¥å……çš„æ•°æ®
     DES_ncbc_encrypt(in, out,
         size1,
         &ks_,
@@ -257,7 +233,7 @@ int XSec::EnDesCBC(const unsigned char* in, int in_size, unsigned char* out,bool
     //PKCS7 Padding
     if (in_size % block_size_ != 0)
     {
-        //¸´ÖÆÊ£ÓàµÄÊı¾İ
+        //å¤åˆ¶å‰©ä½™çš„æ•°æ®
         memcpy(pad, in + size1, (in_size % block_size_));
     }
     DES_ncbc_encrypt(pad, out+size1,
@@ -270,7 +246,7 @@ int XSec::EnDesCBC(const unsigned char* in, int in_size, unsigned char* out,bool
 }
 
 ////////////////////////////////////////////////////////////////////////
-/// DES CBCÄ£Ê½½âÃÜ
+/// DES CBCæ¨¡å¼è§£å¯†
 int XSec::DeDesCBC(const unsigned char* in, int in_size, unsigned char* out,bool is_end)
 {
     DES_ncbc_encrypt(in, out, in_size, &ks_, (DES_cblock*)iv_, DES_DECRYPT);
