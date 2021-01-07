@@ -1,4 +1,28 @@
-﻿#include <iostream>
+﻿/*/*******************************************************************************
+**                                                                            **
+**                     Jiedi(China nanjing)Ltd.                               **
+**	               创建：丁宋涛 夏曹俊，此代码可用作为学习参考                **
+*******************************************************************************/
+
+/*****************************FILE INFOMATION***********************************
+**
+** Project       :c++实战区块链核心密码学-基于openssl
+** Contact       : xiacaojun@qq.com
+**  博客   : http://blog.csdn.net/jiedichina
+**	视频课程 : 网易云课堂	http://study.163.com/u/xiacaojun		
+			   腾讯课堂		https://jiedi.ke.qq.com/				
+			   csdn学院               http://edu.csdn.net/lecturer/lecturer_detail?lecturer_id=961	
+**             51cto学院              http://edu.51cto.com/lecturer/index/user_id-12016059.html	
+** 			   老夏课堂		http://www.laoxiaketang.com 
+**                 
+**  c++实战区块链核心密码学-基于openssl   课程群 ：1064420127加入群下载代码和学员交流
+**                           微信公众号  : jiedi2007
+**		头条号	 : 夏曹俊
+**
+*****************************************************************************
+//！！！！！！！！！c++实战区块链核心密码学-基于openssl 课程  QQ群：1064420127下载代码和学员交流*/
+
+#include <iostream>
 #include <openssl/rsa.h>
 #include <openssl/err.h>
 #include <openssl/evp.h>
@@ -111,6 +135,36 @@ int main(int argc, char* argv[])
     out_len = sizeof(out2);
     EVP_PKEY_decrypt(ctx, out2, &out_len, out, in_size);
     cout << out_len << ":" << out2 << endl;
+
+    //ecc 签名
+    auto mctx = EVP_MD_CTX_new();
+    EVP_DigestInit(mctx, EVP_sha512());
+    EVP_DigestUpdate(mctx, data, data_size);
+    // k私钥 h消息散列 r随机数
+    // rG = (x,y)
+    // s=r^-1(h+kx)  (rG，s)  
+    EVP_SignFinal(mctx, out, &out_len, pkey);
+    cout << "sign:" << out_len << ":" << out << endl;
+
+    //ecc 验签
+    EVP_DigestInit(mctx, EVP_sha512());
+    EVP_DigestUpdate(mctx, data, data_size);
+    // =1 验签成功
+    // s签名  kG 公钥
+    //s^-1hG + s^-1xkG
+    re = EVP_VerifyFinal(mctx, out, out_len, pkey);
+    cout << "EVP_VerifyFinal re = " << re << endl;
+
+    //篡改数据
+    data[0] = '0';
+    EVP_DigestInit(mctx, EVP_sha512());
+    EVP_DigestUpdate(mctx, data, data_size);
+    re = EVP_VerifyFinal(mctx, out, out_len, pkey);
+    cout << "EVP_VerifyFinal re = " << re << endl;
+
+
+    EVP_MD_CTX_free(mctx);
+
 
     EVP_PKEY_free(pkey);
     EVP_PKEY_CTX_free(ctx);
