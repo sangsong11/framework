@@ -1,9 +1,12 @@
 #include <iostream>
 #include <list>
 #include <map>
-
+#include <string>
+#include <utility>
+#include <iostream>
+using namespace std;
 class Fighter;
-class Notifiter; //通知其类
+class Notifiter //通知其类
 {
 public:
      virtual void addToList(Fighter *player) = 0;   //把要被通知的玩家加入列表中
@@ -33,7 +36,6 @@ public:
     {
         notifyer->notify(this,tmpContent);
     }
-private:
     virtual void NotifyWords(Fighter* otherPlayer,string tmpContent)
     {
       cout << "玩家：" << otherPlayer->m_sPlayerName << "收到玩家：" << m_sPlayerName << "发送聊天信息："<< tmpContent <<endl;
@@ -76,8 +78,8 @@ public:
             else
             {
                 list<Fighter*> tmpplayerlist;
-                tmpplayerlist.insert(make_pair(tmpfamilyid,tmpplayerlist));
-                tmpplayerlist[tmpfamilyid].push_back(player);
+                m_familyList.insert(make_pair(tmpfamilyid,tmpplayerlist));
+                m_familyList[tmpfamilyid].push_back(player);
 
             }
          }
@@ -122,13 +124,13 @@ int main(int argc,char **argv)
    pplayerobj1->SetFamilyID(100);
   
    Fighter* pplayerobj2 = new F_Warrior(20,"李四");
-   pplayerobj1->SetFamilyID(100);
+   pplayerobj2->SetFamilyID(100);
 
    Fighter* pplayerobj3 = new F_Mage(30,"王五");
-   pplayerobj1->SetFamilyID(100);
+   pplayerobj3->SetFamilyID(100);
 
    Fighter* pplayerobj4 = new F_Mage(50,"赵六");
-   pplayerobj1->SetFamilyID(200);
+   pplayerobj4->SetFamilyID(200);
 
    
    Notifiter *ptalknotify = new TalkNotifier();
@@ -140,9 +142,9 @@ int main(int argc,char **argv)
    pplayerobj1->SayWords("--------jihe",ptalknotify);
 
    delete pplayerobj1;
-   delete ppladelete2;
-   delete ppladelete3;
-   delete ppladelete4;
+   delete pplayerobj2;
+   delete pplayerobj3;
+   delete pplayerobj4;
 
    delete ptalknotify;
     return 0;
