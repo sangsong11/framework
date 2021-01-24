@@ -67,3 +67,4 @@ builder.cpp 建造者模式：构建器/构建者/生成器模式-创建型模�
 //b)该模式涉及到很多类。Director,Builder对象。对于理解和学习具有一定门槛。
 
 
+factory.cpp 工厂模式  abstractfactory.cpp 抽象工厂模式
