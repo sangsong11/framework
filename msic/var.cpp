@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <stdio.h>
+#include <stdarg.h>
 using namespace std;
 
 #define VA_START(args,type)  (args = (char*)&type + sizeof(type))
@@ -22,6 +23,59 @@ void test(int count, ...)
 	}
 	//VA_END(start);
 }
+
+int putchar(int ch);
+
+void print_int(int value) {
+	char temp[30] = { 0 };
+	int cnt = 0;
+	while (value) {
+		temp[cnt++] = value % 10;
+		value = value / 10;
+	}
+	while (cnt) {
+		cnt--;
+		putchar(temp[cnt] + '0');
+	}
+}
+
+void print_string(const char *value) {
+	while (*value) {
+		putchar(*value);
+		value++;
+	}
+}
+
+void simple_print(const char *control, ...) {
+	va_list parg;
+	va_start(parg, control);
+	while (*control) {
+		if (*control == '%') {
+			char type = *(control + 1);
+			if (type == 'd') {
+				int value = va_arg(parg, int);
+				print_int(value);
+			}
+			else if (type == 'c') {
+				int value = va_arg(parg, int);
+				putchar(value);
+			}
+			else if (type == 's') {
+				const char *value = va_arg(parg, const char *);
+				print_string(value);
+			}
+			if (type == 'd' || type == 'c' || type == 's') {
+				control++;
+			}
+		}
+		else {
+			putchar(*control);
+		}
+		control++;
+	}
+	va_end(parg);
+}
+
 int main()
 {
 	test(4, "11", "22", "33", "44");
