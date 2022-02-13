@@ -36,7 +36,7 @@ void TcpDriver::tcp_packet_handleprocess(lpqsw_connection_t conn)
 	{
 		osal_memcpy(conn->databuf + conn->lastpos,recv,n);
 		conn->lastpos += n;
-		while( conn->lastpos > QSW_NETPACKET_MAX_LENGTH )
+		while( conn->lastpos > QSW_DATA_HEADER_LENGTH  )
 		{
 			if(qsw_strcmp(conn->databuf,0xef)) 
 			{
