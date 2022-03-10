@@ -94,4 +94,16 @@ if(!(expr)) {\
 		if(!expr)  {\
 			return ret;\
 		}
+
+#define SLEEP_US(us) \
+do{ \
+    struct timespec ts,rem; \
+    int err; \
+    ts.tv_sec = (us)/1000000LL; \
+    tv.tv_nsec = (us)%1000000LL; \
+    do{ \
+      err = nanosleep(&ts,&rem); \
+      ts = rem; \
+    }while(err == -1 && errno == EINTR) \
+}while(0)
 #endif
