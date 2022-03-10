@@ -106,4 +106,6 @@ do{ \
       ts = rem; \
     }while(err == -1 && errno == EINTR) \
 }while(0)
+
+#define SLEEP_MS(ms)  SLEEP_US(1000 * (ms))
 #endif
