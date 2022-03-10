@@ -24,9 +24,9 @@ then
              
              cd $path
              nohup ./$name >/dev/null 2>&1 &
-           fi
-           sleep 3
-           done
+          fi
+          sleep 3
+          done
  else
     echo "integrity checking failed" >> ipm-cli.log
  fi
