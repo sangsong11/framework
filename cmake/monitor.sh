@@ -17,7 +17,7 @@ then
     while true
        do 
           pid=`ps -A | grep $name | awk '{print $1}'`
-          now=`date "date + %Y-%m-%d %H:%M:%S"`
+          now=`date "+ %Y-%m-%d %H:%M:%S"`
           if [ ! $pid ]
           then
              echo "$now $name is not running,statr is now ..." >> ipm-cli.log
