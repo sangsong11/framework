@@ -32,6 +32,22 @@ static void osal_list_destroy_data(osal_list_t *thiz,void *data)
 }
 
 /********************************************************************************
+*Function:osal_list_destroy_data
+*Description:销毁链表节点用户数据
+*Return：void
+*@thiz[in]:链表句柄
+*@data[in]:用户数据
+********************************************************************************/
+static void osal_list_destroy_data(osal_list_t *thiz,void *data)
+{
+	if(NULL != thiz->data_destroy)
+	{
+		thiz->data_destroy(thiz->data_destroy_ctx,data);
+	}
+	return ;
+}
+
+/********************************************************************************
 *Function:osal_list_create_node
 *Description:创建链表节点
 *Return：   链表节点句柄
