@@ -11,3 +11,7 @@ patchelf 去掉开源动态库的soname
     vi /etc/sysctl.conf  ->    net.ipv4.ip_forward =1
     iptables -t nat -A PREROUTING -d 30.30.3.216 -p tcp -dport 9092 -j DNAT --to 192.0.24.221:22
     iptables -t nat -A POSTROUTING -p -tcp -j MASQUREAD
+dd烧写：
+    sudo fdisk -u -l /dev/sdc
+    dd bs=512 count=[end +1] if=/dev/sdc | gzip -6 > xxx.img
+    gzip -dc ./xxx.img | dd of=/dev/sdb
