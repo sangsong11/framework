@@ -108,4 +108,14 @@ do{ \
 }while(0)
 
 #define SLEEP_MS(ms)  SLEEP_US(1000 * (ms))
+
+//即判断多个宏是否同时定义
+#if defined(WIN32) && defined(__LWIP_OPT_H__) && defined(LWIP_HDR_OPT_H)
+//即判断多个宏是否有其中一个定义
+#if defined(_AIX) || defined(__NOVELL_LIBC__) || defined(__NetBSD__) || \
+    defined(__minix) || defined(__SYMBIAN32__) || defined(__INTEGRITY) || \
+    defined(ANDROID) || defined(__ANDROID__) || defined(__OpenBSD__) || \
+   (defined(__FreeBSD_version) && (__FreeBSD_version < 800000))
+//即判断多个宏是否同时都没有定义
+#if !defined(WIN32) && !defined(__WATCOMC__) && !defined(__VXWORKS__)
 #endif
