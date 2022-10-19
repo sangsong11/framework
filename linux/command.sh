@@ -19,7 +19,7 @@ dd烧写：
 以下载链接 https://www.openssl.org/source/openssl-1.1.1o.tar.gz 为例
 
 下载解压之后，查看根目录的 NOTES.ANDROID，其中有
-
+openssl源码下的install.md文档
 export ANDROID_NDK_HOME=/home/whoever/Android/android-sdk/ndk/20.0.5594570
 PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$ANDROID_NDK_HOME/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin:$PATH
 ./Configure android-arm64 -D__ANDROID_API__=29
