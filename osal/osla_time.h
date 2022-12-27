@@ -16,7 +16,7 @@ typedef enum _osal_timer_state_t_
 	OSAL_TIMER_UNKNOW = 0X10
 }osal_timer_state_t;
 
-typedef enum _osal_timer_elapsed_t_
+typedef  _osal_timer_elapsed_t_
 {
 	struct timeval begin_time;
 	struct timeval end_time;
